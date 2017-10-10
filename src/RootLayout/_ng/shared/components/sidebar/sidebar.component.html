@@ -1,0 +1,35 @@
+<nav class="sidebar {{selected=='' ? '' : 'expended' }}" [ngClass]="{sidebarPushRight: isActive}">
+    <ul class="list-group">
+        <li *ngFor="let menu of menus">
+            <a class="list-group-item" (click)="selected = menu.name" [routerNav]="menu['submenu'] === undefined || menu['submenu'].length==0" [routerLink]="menu.link" [routerLinkActive]="['router-link-active']">
+                <i *ngIf="menu.icon" class="fa fa-fw {{ menu.icon }}" aria-hidden="true"></i>
+                <img *ngIf="menu.image" [src]="menu.image"/>
+                <span class="title">
+                    {{ menu.title | translate }}
+                </span>
+            </a>
+
+
+            <div *ngIf="menu.submenu != undefined" class="submenu" [ngbCollapse]="selected != menu.name">
+                <a [routerLink]="menu.link" *ngIf="menu.link !=''" (click)="selected=''">
+                    <strong class="submenu-title">{{ menu.title | translate}}</strong>
+                </a>
+                <strong class="submenu-title" *ngIf="menu.link ==''">{{ menu.title  | translate}}</strong>
+                <a class="close-submenu" data-role="close-submenu" (click)="selected=''"><i class="fa fa-times" aria-hidden="true"></i></a>
+
+                <ng-container *ngTemplateOutlet="recursiveMenu; context:{ $implicit: menu.submenu }"></ng-container>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<ng-template #recursiveMenu let-list>
+    <li *ngFor="let item of list">
+        <a class="menu-item" [routerLink]="item.link" *ngIf="item.link !=''" (click)="selected=''">
+            {{item.title}}
+        </a>
+        <ul *ngIf="item.submenu !=undefined">
+            <ng-container *ngTemplateOutlet="recursiveMenu; context:{ $implicit: item.submenu }"></ng-container>
+        </ul>
+    </li>
+</ng-template>

@@ -1,0 +1,23 @@
+{
+    "name": "ngsuit/blog",
+    "version": "0.0.1",
+    "license": "MIT",
+    "private": true,
+    "innerdeps": {},
+    "scripts": {
+        "install": "rm -rf ./node_modules"
+    },
+    "dependencies": {
+        "@angular/animations": "^4.0.0",
+        "@angular/common": "^4.0.0",
+        "angular2-markdown":"*",
+        "marked":"^0.3.6 -g",
+        "aws-sdk": "2.67.0"
+    },
+    "devDependencies": {
+
+    },
+    "description": "This project is a module for ngsuit.",
+    "keywords": [],
+    "author": ""
+}

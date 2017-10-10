@@ -1,0 +1,9 @@
+{
+    "name": "gitbotlambda",
+    "version": "0.0.1",
+    "description": "a lambda function for github",
+    "dependencies": {
+        "aws-sdk": "^2.67.0",
+        "typescript": "^2.1.0"
+    }
+}

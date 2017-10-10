@@ -1,0 +1,56 @@
+<router-outlet></router-outlet>
+
+<header class="intro-header" style="background-image: url('/assets/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 home-content">
+                <div class="site-heading">
+                    <h1>{{ page_title }}</h1>
+                    <hr class="small">
+                    <span class="subheading">{{ page_subtitle }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 home-content">
+        <div class="post-preview" *ngFor="let post of articles">
+            <h2 class="post-title">
+                <a [routerLink]="[post.ng_url]">
+                    {{ post.title }}
+                </a>
+            </h2>
+            <p class="post-meta">
+                posted in <a href="/{{ post.categories[0] }}">{{post.categories[0]}}</a> on {{ post.LastModified | date:'MMMM dd, yyyy'}} by Yongcheng Chen
+            </p>
+            <div *ngIf="false && post.categories != undefined">
+                <ul class="list-unstyled post-categories">
+                    <li *ngFor="let category of post.categories; let last = last">
+                        {{ last == category ? '' : category }}
+                    </li>
+                </ul>
+            </div>
+            <div class="post-subtitle" Markdown path="{{post.res_url}}"></div>
+            <p class="post-meta">
+                <a [routerLink]="[post.ng_url]">
+                    Continue to read-->
+                </a>
+            </p>
+        </div>
+        <hr>
+
+        <h3 *ngIf="noResult" class="text-center">NO POSTS FOUND</h3>
+
+        <div>
+            <ul class="pagination">
+                <li class="page-item active" *ngFor="let page of pages">
+                    <button class="btn btn-sm {{ page == currentPage ? 'btn-primary': 'btn-secondary'}}" (click)="pageTo(page)">
+                        {{ page + 1}}
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
