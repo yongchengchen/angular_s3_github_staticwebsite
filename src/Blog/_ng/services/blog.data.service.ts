@@ -27,6 +27,7 @@ interface Post {
     title: string;
     url: string;
     menu?: string;
+    image?: string;
 }
 
 interface ARTICLE_BY_CATEGORY_DIC {
@@ -98,7 +99,8 @@ export class BlogDataService {
                 ng_url:key,
                 res_url:post.url,
                 categories:post.categories,
-                title:post.title
+                title:post.title,
+                image:post.image
             }
             s3list.Contents.push(item);
         }
@@ -115,7 +117,8 @@ export class BlogDataService {
             if (paths.length == 1) {
                 //is file
                 if (item.Size > 0) {
-                    continue;
+                    // continue;
+                    console.log(item);
                 }
             }
             if (paths[0] == 'assets') {
@@ -135,7 +138,7 @@ export class BlogDataService {
                         name:tempKey,
                         item:{
                             link: (isLastPart ? '/article/' : '/category/') + tempKey,
-                            image:'/assets/images/' + path + '.png',
+                            image: item.image ? item.image : ('/assets/images/' + path + '.png'),
                             title: (isLastPart && item.title) ? item.title:path,
                             submenu:[],
                             items:[]

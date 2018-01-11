@@ -16,6 +16,10 @@ export const CHILDROUTES: Routes = [
                 loadChildren: "Blog/home/renderer.module#RendererModule"
             },
             {
+                path: "article/:name", 
+                loadChildren: "Blog/article/article.module#ArticleModule"
+            },
+            {
                 path: "article/:category/:name", 
                 loadChildren: "Blog/article/article.module#ArticleModule"
             }
@@ -26,6 +30,7 @@ export const CHILDROUTES: Routes = [
 export const MENUS = [
     {sort:0, item:{name:"home", link:"/home", image:"/assets/images/home.png", title:"Home"}}
 ];
+    // {sort:0, item:{name:"me", link:"/article/aboutme.md", image:"/assets/images/aboutme.png", title:"Me"}}
 
 // export const MENUS = [
 //     {sort:0, name:"home", item:{ link:"/home", image:"/assets/images/home.png", title:"Home"}},

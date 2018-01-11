@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BlogDataService } from '../services/blog.data.service'
@@ -20,13 +21,17 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     public markdown_file:string;
 
-    constructor(private route: ActivatedRoute, private blogdata:BlogDataService, private mq:MQService) { }
+    constructor(private route: ActivatedRoute, private blogdata:BlogDataService, private mq:MQService, private title:Title) { }
 
     ngOnInit() {
         this.blogdata.loadMenu()
         this.routeSub = this.route.params.subscribe(params => {
             // this.composeKey = [AWS_CONFIG.s3_statichost_url, params['category'], params['name']].join('/')
-            this.composeKey = [ params['category'], params['name']].join('/')
+            let keys = [params['name']];
+            if (params['category']) {
+                keys.unshift(params['category']);
+            }
+            this.composeKey = keys.join('/')
             this.findArticle(this.composeKey)
         });
         
@@ -34,6 +39,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
             if (msg.type == 'listfetched') {
                 this.s3list = <AWS_S3_LISTOBJECTS_RESPONSE>msg.data;
                 this.findArticle(this.composeKey)
+                this.title.setTitle(this.blogdata.getSiteConfig().title)
             }
          });
 
@@ -46,6 +52,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
                 if (item.Key == this.composeKey) {
                     this.markdown_file = item.res_url;
                     this.mq.notify('headercompoment', {type:'title', data:item.title});
+                    this.title.setTitle(this.blogdata.getSiteConfig().title + '  - ' + item.title)
                     break;
                 }
             }

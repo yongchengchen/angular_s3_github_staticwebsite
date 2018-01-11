@@ -12,7 +12,8 @@ export interface AWS_S3_LISTOBJECTS_CONTENT_ITEM {
     ng_url?:string,
     res_url?:string,
     categories?:string[],
-    title?:string
+    title?:string,
+    image?:string
 }
 
 export interface AWS_S3_LISTOBJECTS_RESPONSE {
