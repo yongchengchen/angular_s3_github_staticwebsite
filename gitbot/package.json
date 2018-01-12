@@ -1,9 +1,18 @@
 {
     "name": "gitbotlambda",
     "version": "0.0.1",
+    "license": "MIT",
+    "scripts": {
+        "tsc": "webpack",
+        "webpack": "webpack",
+        "build": "tsc && webpack",
+        "postbuild":"rm -rf ./tmp",
+        "deploy": "tsc "
+    },
     "description": "a lambda function for github",
     "dependencies": {
         "aws-sdk": "^2.67.0",
-        "typescript": "^2.1.0"
+        "typescript": "^2.1.0",
+        "webpack":"^3.7.1"
     }
 }

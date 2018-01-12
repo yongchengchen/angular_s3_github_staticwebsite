@@ -23,3 +23,15 @@ export class Singleton {
         return this.instance;
     }
 }
+
+export interface GITHUB_OPTIONS {
+    owner:string
+    repos:string,
+    token:string,
+}
+
+export interface S3_OPTIONS {
+    clientID:string
+    secret:string,
+    region?:string
+}

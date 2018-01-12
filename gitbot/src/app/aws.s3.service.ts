@@ -1,7 +1,8 @@
 import * as AWS from "aws-sdk/global";
 import * as S3 from "aws-sdk/clients/s3";
-
 import * as fs from "fs";
+
+import { S3_OPTIONS } from './lib/interfaces';
 
 /**
  * Created by Yongcheng Chen
@@ -9,18 +10,18 @@ import * as fs from "fs";
 
 export class AwsS3Service {
     private s3:S3;
-    constructor(clientId:string, secret:string, region:string,) {
-        AWS.config.credentials = new AWS.Credentials(clientId, secret);
-        this.getS3(region);
+    constructor(private options?:S3_OPTIONS) {
+        if (this.options) {
+            AWS.config.credentials = new AWS.Credentials(this.options.clientID, this.options.secret);
+            AWS.config.update({
+                region: this.options.region,
+            });
+        }
+        this.getS3();
     }
 
-    private getS3(region:string): any {
-        AWS.config.update({
-            region: region,
-        });
-
+    private getS3(): any {
         let clientParams:any = {
-            region: region,
             apiVersion: '2006-03-01'
         };
         
@@ -34,7 +35,8 @@ export class AwsS3Service {
             let params = {
                 Body: data,
                 Bucket: toBucket, 
-                Key: asKey
+                Key: asKey,
+                ACL:'public-read'
             };
             pthis.s3.putObject(params, function(err, data) {
                 if (err) console.log(err, err.stack); // an error occurred

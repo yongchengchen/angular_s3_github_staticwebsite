@@ -2,10 +2,8 @@
 
 import { Helper } from './lib/helper';
 import * as https from "https";
-import { KeyValueDic } from './lib/interfaces'
+import { KeyValueDic, GITHUB_OPTIONS } from './lib/interfaces'
 import { HttpClient } from './lib/http.client'
-
-const githubtoken = 'put your github token here';
 
 interface Links {
     self: string;
@@ -33,9 +31,9 @@ export class Github {
     private reqDic:KeyValueDic<number>= {};
     private respDic:KeyValueDic<GITHUB_API_V3_REPO_CONTENT[]>= {};
     
-    constructor(private owner:string) {
+    constructor(private options:GITHUB_OPTIONS) {
         HttpClient.getInstance().addPlugin(options=>{
-            options['headers']['Authorization'] = 'token ' + githubtoken;
+            options['headers']['Authorization'] = this.options.token;
             return options;
         })
     }
@@ -44,7 +42,7 @@ export class Github {
     public getReadme(repos:string) {
         let pthis = this;
         return new Promise(function(resolve, reject) {
-            let path:string = [pthis.baseUrl, 'repos', pthis.owner, repos, 'readme'].join('/')
+            let path:string = [pthis.baseUrl, 'repos', pthis.options.owner, repos, 'readme'].join('/')
             let timestamp = new Date();
             HttpClient.getInstance().get(path + '?' + timestamp.getTime(),
                 (err:boolean, resp:string)=>{
@@ -77,7 +75,7 @@ export class Github {
         this.reqDic[reqKey] = this.reqDic[reqKey] + 1;
         // /repos/:owner/:repo/contents/:path
         let timestamp = new Date();
-        HttpClient.getInstance().get([this.baseUrl, 'repos', this.owner, repos, 'contents', directory ? directory:''].join('/') + '?' + timestamp.getTime(),
+        HttpClient.getInstance().get([this.baseUrl, 'repos', this.options.owner, repos, 'contents', directory ? directory:''].join('/') + '?' + timestamp.getTime(),
             (err:boolean, resp:string)=>{
                 this.reqDic[reqKey] = this.reqDic[reqKey] - 1;
                 if (err) {
